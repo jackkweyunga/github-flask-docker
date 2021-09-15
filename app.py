@@ -1,4 +1,6 @@
+from logging import debug
 from flask import Flask
+import os
 
 app = Flask(__name__)
 
@@ -9,4 +11,9 @@ def index():
 
 
 if __name__ == "__main__":
-    app.run(debug=True, port="0.0.0.0:5000")
+    env = os.environ["env"]
+    print(env)
+    debug = True
+    if env == "prod":
+        debug = False
+    app.run(debug=debug, host='0.0.0.0')
