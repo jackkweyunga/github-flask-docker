@@ -1,29 +1,37 @@
 name: Docker Image CI
 
+# on:
+#   release:
+#     types:
+#      - "released"
+
 on:
-  release:
-    types:
-     - "released"
+  push:
+    branches:
+      - "main"
 
 jobs:
 
-  build-publish:
-    name: build and push docker
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - uses: mr-smithers-excellent/docker-build-push@v5
-      with:
-        image: jackkweyunga/github-flask-docker
-        registry: docker.io
-        username: ${{ secrets.DOCKER_USERNAME }}
-        password: ${{ secrets.DOCKER_PASSWORD }}
+  # build-publish:
+  #   name: build and push docker
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - uses: actions/checkout@v2
+  #   - uses: mr-smithers-excellent/docker-build-push@v5
+  #     with:
+  #       image: jackkweyunga/github-flask-docker
+  #       registry: docker.io
+  #       username: ${{ secrets.DOCKER_USERNAME }}
+  #       password: ${{ secrets.DOCKER_PASSWORD }}
+
       
   deploy:
     name: deploy to server
     runs-on: ubuntu-latest
     steps:
-    - name: ssh
+    - name: checkout to the branch
+      uses: actions/checkout@v2
+    - name: ssh to copy files and deploy project
       uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.SSH_HOST }}
@@ -31,6 +39,6 @@ jobs:
         key: ${{ secrets.SSH_KEY }}
         port: ${{ secrets.SSH_PORT }}
         script: |
-          mkdir delete_this
+          sh ./copy.sh
           
         
