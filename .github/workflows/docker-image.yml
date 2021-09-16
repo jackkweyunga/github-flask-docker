@@ -29,11 +29,11 @@ jobs:
     name: deploy to server
     runs-on: ubuntu-latest
     steps:
-    - name: checkout to the branch and copy required files to server
+    - name: checkout to the branch
       uses: actions/checkout@v2
-      with:
-        run: |
-          sh ./copy.sh
+    - name: copy required files to server
+      run: |
+        sh ./copy.sh
     - name: ssh to copy files and deploy project
       uses: appleboy/ssh-action@master
       with:
