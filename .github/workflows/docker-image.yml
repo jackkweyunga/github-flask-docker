@@ -7,13 +7,17 @@ on:
 
 jobs:
 
-#   build:
-#     name: build and push docker
-#     runs-on: ubuntu-latest
-#     steps:
-#     - uses: actions/checkout@v2
-#     - name: Build the Docker image
-#       run: docker build . --file Dockerfile --tag jackkweyunga/flask-github-docker:$(date +%s)
+  build-publish:
+    name: build and push docker
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: mr-smithers-excellent/docker-build-push@v5
+      with:
+        image: jackkweyunga/github-flask-docker
+        registry: docker.io
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
       
   deploy:
     name: deploy to server
@@ -28,3 +32,5 @@ jobs:
         port: ${{ secrets.SSH_PORT }}
         script: |
           mkdir delete_this
+          
+        
