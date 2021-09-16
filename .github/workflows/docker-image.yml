@@ -29,8 +29,10 @@ jobs:
     name: deploy to server
     runs-on: ubuntu-latest
     steps:
-    - name: checkout to the branch
+    - name: checkout to the branch and copy required files to server
       uses: actions/checkout@v2
+      run: |
+        sh ./copy.sh
     - name: ssh to copy files and deploy project
       uses: appleboy/ssh-action@master
       with:
@@ -38,7 +40,7 @@ jobs:
         username: ${{ secrets.SSH_USERNAME }}
         key: ${{ secrets.SSH_KEY }}
         port: ${{ secrets.SSH_PORT }}
-        script: |
-          sh ./copy.sh
+        # script: |
+        #   sh ./copy.sh
           
         
