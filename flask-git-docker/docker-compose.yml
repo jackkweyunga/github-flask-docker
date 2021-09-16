@@ -1,0 +1,14 @@
+
+version: '3.7'
+
+services: 
+
+  app:
+    image: jackkweyunga/github-flask-docker
+    ports: 
+    - '8080:5000'
+
+networks: 
+  default:
+    external:
+      name: npm 
