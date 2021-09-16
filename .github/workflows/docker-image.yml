@@ -8,10 +8,22 @@ on:
 jobs:
 
   build:
-
+    name: build and push docker
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v2
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag jackkweyunga/flask-github-docker:$(date +%s)
+      
+  deploy:
+    name: deploy to server
+    runs-on: ubuntu-latest
+    steps:
+    - name: ssh
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USERNAME }}
+        key: ${{ secrets.SSH_KEY }}
+        port: ${{ secrets.SSH_PORT }}
+        script: whoami
