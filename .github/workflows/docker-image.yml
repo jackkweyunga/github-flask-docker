@@ -32,10 +32,14 @@ jobs:
     - name: checkout to the branch
       uses: actions/checkout@v2
     - name: copy required files to server
-      run: |
-        chmod +x copy.sh
-        ./copy.sh
-      shell: bash
+      uses: burnett01/rsync-deployments@5.1
+      with:
+        switches: -avzr --delete
+        path: ./flask-git-docker/
+        remote_path: /home/${{ secrets.SSH_USERNAME }}/flask-git-docker/
+        remote_host: ${{ secrets.SSH_HOST }}
+        remote_user: ${{ secrets.SSH_USERNAME }}
+        remote_key: ${{ secrets.SSH_KEY }}
     - name: ssh to copy files and deploy project
       uses: appleboy/ssh-action@master
       with:
@@ -45,9 +49,9 @@ jobs:
         port: ${{ secrets.SSH_PORT }}
         # script: |
         #   sh ./copy.sh
-    env:
-      SSH_KEY: ${{ secrets.SSH_KEY }}
-      SSH_USERNAME: ${{ secrets.SSH_USERNAME }}
-      SSH_HOST: ${{ secrets.SSH_HOST }}
+#     env:
+#       SSH_KEY: ${{ secrets.SSH_KEY }}
+#       SSH_USERNAME: ${{ secrets.SSH_USERNAME }}
+#       SSH_HOST: ${{ secrets.SSH_HOST }}
           
         
