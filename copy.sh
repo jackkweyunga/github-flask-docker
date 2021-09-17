@@ -2,8 +2,8 @@
 
 # copy directory to server
 
-# scp -i ${{secrets.SSH_KEY}} ${{secrets.SSH_USERNAME}}@${{secrets.SSH_HOST}}:/home/${{secrets.SSH_USERNAME}}/
+# scp -i $SSH_KEY $SSH_USERNAME@$SSH_HOST:/home/$SSH_USERNAME/
 
 
-rsync -avz ./flask-git-docker/ ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:/home/${{secrets.SSH_USERNAME}}/flask-git-docker/
+rsync -avz ./flask-git-docker/ ${{ SSH_USERNAME }}@${{ SSH_HOST }}:/home/${{SSH_USERNAME}}/flask-git-docker/
 
